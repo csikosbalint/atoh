@@ -1,18 +1,48 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
+import { HeroesComponent } from './heroes/heroes.component';
+import { KataComponent } from './kata/kata.component';
+import { HeroDetailComponent } from './hero-detail/hero-detail.component';
+import { HeroService } from './service/hero.service';
+import { AppRoutingModule } from './app-routing.module';
+import { Routes } from '@angular/router';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { KataInMemoryDataService }  from './in-memory-data.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeroesComponent,
+    KataComponent,
+    HeroDetailComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    
+    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
+    // and returns simulated server responses.
+    // Remove it when a real server is ready to receive requests.
+    // HttpClientInMemoryWebApiModule.forRoot(
+      // KataInMemoryDataService, { dataEncapsulation: false }
+    // )
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    HeroService,
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
+  ],
+  bootstrap: [AppComponent, KataComponent]
 })
 export class AppModule { }
+
